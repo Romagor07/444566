@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Формула здоровья - инновации для жизни</title>
+    
+    <!-- Preconnect для ускорения загрузки внешних ресурсов -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="responsive.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"></noscript>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    
+    <meta name="theme-color" content="#64b61a">
+    
+    <style>
+        :active, :focus, :hover {
+            outline: 0 !important;
+            outline-color: transparent !important;
+            outline-style: none !important;
+        }
+    </style>
+</head>
+<body>
+
+<div id="header-placeholder"></div>
+<div class="header-spacer-only-mobile"></div>
+
+<main>
+    <section class="hero-video">
+        <div class="video-wrapper">
+            <!-- Десктопное видео с poster и preload="none" для оптимизации -->
+            <video autoplay muted loop playsinline class="bg-video bg-video-desktop" preload="none" poster="images/video-poster.webp">
+                <source src="video.mp4" type="video/mp4">
+            </video>
+            <!-- Мобильное видео -->
+            <video autoplay muted loop playsinline class="bg-video-mobile" preload="none" poster="images/video-poster-mobile.webp"
+                   style="object-fit: fill; width: 100%; height: 100%; position: absolute; top: 0; left: 0;">
+                <source src="video2.mp4" type="video/mp4">
+            </video>
+            <div class="video-overlay"></div>
+            <div class="scroll-mouse">
+                <div class="mouse-wheel"></div>
+            </div>
+        </div>
+        <div class="video-text-container">
+            <div class="container">
+                <div class="video-text-content">
+                    <h1>Формула здоровья —<br>ваша сила, ваша гармония, ваша победа!</h1>
+                    <p>Инновационные биотехнологии для здоровья, молодости и красоты.<br>Продукты нового поколения на основе передовых научных разработок.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="products" class="slider-section">
+        <div class="swiper blog-slidercontainer" id="productSlider">
+            <div class="swiper-wrapper blog-sliderwrapper">
+                <div class="swiper-slide blog-slideritem" data-bg-color="#ABD0AD">
+                    <div class="container">
+                        <div class="row align-items-center">
+                            <div class="col-lg-6">
+                                <div class="blog-slider_img">
+                                    <img src="images/Фохоу.webp" alt="Бады" loading="lazy">
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="blog-slider_content">
+                                    <span class="blog-slider_code">Капсулы Линчжи Фохоу</span>
+                                    <div class="blog-slider_title">ЗДОРОВЬЕ</div>
+                                    <div class="blog-slider_text">Биологически активная добавка к пищи «FOHERB» - произведенные на основе уникальных китайских рецептов.</div>
+                                    <a href="product-detail.html?id=foherb" class="rounded-btn1">Подробнее →</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide blog-slideritem" data-bg-color="#ABD0AD">
+                    <div class="container">
+                        <div class="row align-items-center">
+                            <div class="col-lg-6">
+                                <div class="blog-slider_img">
+                                    <img src="images/effector.webp" alt="Витамины" loading="lazy">
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="blog-slider_content">
+                                    <span class="blog-slider_code">VERUM EFFECTOR</span>
+                                    <div class="blog-slider_title">ЭНЕРГИЯ</div>
+                                    <div class="blog-slider_text">Многофункциональный биомодулятор «EFFECTOR» - инновационный российский продукт.</div>
+                                    <a href="product-detail.html?id=effector" class="rounded-btn1">Подробнее →</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide blog-slideritem" data-bg-color="#ABD0AD">
+                    <div class="container">
+                        <div class="row align-items-center">
+                            <div class="col-lg-6">
+                                <div class="blog-slider_img">
+                                    <img src="images/O2 tonic.webp" alt="Косметика" loading="lazy">
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="blog-slider_content">
+                                    <span class="blog-slider_code">Jenel O2 tonic</span>
+                                    <div class="blog-slider_title">КРАСОТА</div>
+                                    <div class="blog-slider_text">Инновационная формула O2 TONIC для интенсивного увлажнения и омоложения кожи.</div>
+                                    <a href="product-detail.html?id=o2tonic" class="rounded-btn1">Подробнее →</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-pagination blog-sliderpagination"></div>
+        </div>
+    </section>
+</main>
+
+<section class="brands-marquee-section">
+    <div class="marquee-wrapper">
+        <div class="marquee-track-brands">
+            <a href="presentations.html#health" class="marquee-brand-item"><span class="brand-name">VERUM</span></a>
+            <a href="presentations.html#beauty" class="marquee-brand-item"><span class="brand-name">Jénel</span></a>
+            <a href="presentations.html#beauty" class="marquee-brand-item"><span class="brand-name">FUNDESEE</span></a>
+            <a href="presentations.html#health" class="marquee-brand-item"><span class="brand-name">FOHERB</span></a>
+            <a href="presentations.html#whieda" class="marquee-brand-item"><span class="brand-name">WHIEDA</span></a>
+            <a href="presentations.html#whieda" class="marquee-brand-item"><span class="brand-name">ATOMY</span></a>
+            <!-- Дубликаты для бесконечной анимации -->
+            <a href="presentations.html#health" class="marquee-brand-item"><span class="brand-name">VERUM</span></a>
+            <a href="presentations.html#beauty" class="marquee-brand-item"><span class="brand-name">Jénel</span></a>
+            <a href="presentations.html#beauty" class="marquee-brand-item"><span class="brand-name">FUNDESEE</span></a>
+            <a href="presentations.html#health" class="marquee-brand-item"><span class="brand-name">FOHERB</span></a>
+            <a href="presentations.html#whieda" class="marquee-brand-item"><span class="brand-name">WHIEDA</span></a>
+            <a href="presentations.html#whieda" class="marquee-brand-item"><span class="brand-name">ATOMY</span></a>
+        </div>
+    </div>
+</section>
+
+<!-- БЛОК О НАС -->
+<section id="aboutus">
+    <div class="container aboutusblockpadding">
+        <div class="row">
+            <div class="col-6 d-flex align-items-center">
+                <h3 style="font-weight: bold">О нас</h3>
+            </div>
+            <div class="col-6 d-flex align-items-center justify-content-end">
+                <h6><a href="history.html" style="color:#000">узнать больше →</a></h6> 
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="container pb-50">
+        <div class="row">
+            <div class="col-md-6">
+                <p>«Формула здоровья» объединяет инновации мировых лидеров в области биотехнологий, здоровья и красоты. Это синтез науки VERUM GLOBAL (Россия), восточных традиций WHIEDA (Китай) и корейского качества Atomy. Наша миссия — сделать передовые разработки доступными для каждого, помогая сохранять активность, молодость и гармонию на долгие годы.</p>
+                <p>Мы представляем продукцию, созданную на основе впРНК, традиционной китайской медицины и принципа «Абсолютное качество по абсолютной цене». Это не просто добавки или косметика — это формула вашей силы и победы над возрастом.</p>
+                <p>Наша главная цель — чтобы инновационные решения в области здоровья и долголетия стали неотъемлемой частью жизни каждого человека.</p>
+                <p><strong>Почему партнеры выбирают нас?</strong> Потому что мы предлагаем не просто продукты, а системный подход к здоровью. Каждый бренд в нашей экосистеме прошел строгий отбор: VERUM с его прорывными биотехнологиями, WHIEDA с тысячелетними знаниями ТКМ и Atomy, доказавший эффективность на глобальном рынке.</p>
+                <p><strong>Ваше здоровье — наша формула успеха.</strong> Мы верим, что качественная профилактика, клеточное восстановление и натуральный уход должны быть доступны каждому. Присоединяйтесь к сообществу людей, которые уже выбрали активное долголетие и уверенность в каждом дне.</p>
+                <div class="keywords-buttons">
+                    <button type="button" class="rounded-btn1 keyword-btn">Здоровье</button>
+                    <button type="button" class="rounded-btn1 keyword-btn">Обновление</button>
+                    <button type="button" class="rounded-btn1 keyword-btn">Мудрость</button>
+                    <button type="button" class="rounded-btn1 keyword-btn">Энергия</button>
+                    <button type="button" class="rounded-btn1 keyword-btn">Гармония</button>
+                    <button type="button" class="rounded-btn1 keyword-btn">Уверенность</button>
+                    <button type="button" class="rounded-btn1 keyword-btn">Бодрость</button>
+                    <button type="button" class="rounded-btn1 keyword-btn">Исцеление</button>
+                    <button type="button" class="rounded-btn1 keyword-btn">Душевный комфорт</button>
+                    <button type="button" class="rounded-btn1 keyword-btn">Молодость</button>
+                    <button type="button" class="rounded-btn1 keyword-btn">Долголетие</button>
+                    <button type="button" class="rounded-btn1 keyword-btn">Преображение</button>
+                </div>
+            </div>
+            <div class="col-md-6 text-end">
+                <img src="images/main1.webp" class="img-fluid about-main1-image" alt="О нас" style="border-radius: 20px;" loading="lazy">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- БЛОК VERUM SHORT -->
+<section class="verum-short-section">
+    <div class="container">
+        <h2 class="verum-short-title">Short</h2>
+        <div class="verum-short-grid">
+            <div class="short-card">
+                <div class="short-video-wrapper">
+                    <video class="short-video" autoplay loop muted playsinline preload="none" poster="images/video-poster.webp">
+                        <source src="vo1.mp4" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+            <div class="short-card">
+                <div class="short-video-wrapper">
+                    <video class="short-video" autoplay loop muted playsinline preload="none" poster="images/video-poster.webp">
+                        <source src="vo2.mp4" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+            <div class="short-card">
+                <div class="short-video-wrapper">
+                    <video class="short-video" autoplay loop muted playsinline preload="none" poster="images/video-poster.webp">
+                        <source src="vo3.mp4" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div id="footer-placeholder"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script src="script.js"></script>
+<script>
+    function initMainSlider() {
+        // Ждём загрузки Swiper
+        if (typeof Swiper === 'undefined') {
+            setTimeout(initMainSlider, 200);
+            return;
+        }
+        
+        const sliderSection = document.getElementById('products');
+        function changeBackgroundColor(index) {
+            const slides = document.querySelectorAll('.blog-slideritem');
+            const activeSlide = slides[index];
+            if (activeSlide && sliderSection) {
+                const bgColor = activeSlide.getAttribute('data-bg-color');
+                if (bgColor) sliderSection.style.backgroundColor = bgColor;
+            }
+        }
+        new Swiper('#productSlider', {
+            effect: 'slide',
+            loop: true,
+            autoplay: { delay: 5000, disableOnInteraction: false },
+            mousewheel: false,
+            pagination: { el: '.swiper-pagination', clickable: true },
+            on: { 
+                init: function() { changeBackgroundColor(this.realIndex); }, 
+                slideChange: function() { changeBackgroundColor(this.realIndex); } 
+            }
+        });
+        const scrollMouse = document.querySelector('.scroll-mouse');
+        if (scrollMouse) scrollMouse.addEventListener('click', () => document.getElementById('products').scrollIntoView({ behavior: 'smooth' }));
+    }
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        initMainSlider();
+    });
+</script>
+</body>
+</html>

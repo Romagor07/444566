@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Оформление заказа - Формула здоровья</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="responsive.css">
+    <link rel="stylesheet" href="checkout.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+
+<div id="header-placeholder"></div>
+
+<main class="checkout-page">
+    <div class="container">
+        <h1 class="page-title">Оформление заказа</h1>
+        <div id="checkoutContent"></div>
+    </div>
+</main>
+
+<div id="footer-placeholder"></div>
+
+<script src="script.js"></script>
+<script>
+    // Проверка авторизации
+    if (!currentUser) {
+        sessionStorage.setItem('returnUrl', 'checkout.html');
+        window.location.href = 'login.html';
+    }
+
+    // Функция отображения страницы оформления
+    function renderCheckoutPage() {
+        const container = document.getElementById('checkoutContent');
+        if (!container) return;
+
+        let currentCart = [];
+        if (currentUser && currentUser.email) {
+            const savedCart = localStorage.getItem('cart_' + currentUser.email);
+            currentCart = savedCart ? JSON.parse(savedCart) : [];
+        }
+
+        if (!currentCart.length) {
+            container.innerHTML = `
+                <div class="empty-cart">
+                    <i class="fas fa-shopping-cart"></i>
+                    <p>Ваша корзина пуста</p>
+                    <a href="cabinet.html" class="btn-back">Вернуться к покупкам</a>
+                </div>
+            `;
+            return;
+        }
+
+        let total = 0;
+        const orderItemsHtml = currentCart.map(item => {
+            const qty = item.quantity || 1;
+            const subtotal = item.price * qty;
+            total += subtotal;
+            return `
+                <div class="order-item">
+                    <span>${escapeHtml(item.name)} &times; ${qty}</span>
+                    <span>${subtotal.toLocaleString()} &#8381;</span>
+                </div>
+            `;
+        }).join('');
+
+        const userName = currentUser.name || '';
+        const userEmail = currentUser.email || '';
+        const userPhone = currentUser.phone || '';
+
+        container.innerHTML = `
+            <div class="checkout-container">
+                <div class="checkout-form">
+                    <h3>Контактные данные</h3>
+                    <div class="form-group">
+                        <label>ФИО *</label>
+                        <input type="text" id="fullName" placeholder="Иванов Иван Иванович" value="${escapeHtml(userName)}">
+                    </div>
+                    <div class="form-group">
+                        <label>Email *</label>
+                        <input type="email" id="email" placeholder="example@mail.com" value="${escapeHtml(userEmail)}">
+                    </div>
+                    <div class="form-group">
+                        <label>Телефон *</label>
+                        <input type="tel" id="phone" placeholder="+7 (___) ___-__-__" value="${escapeHtml(userPhone)}">
+                    </div>
+                    <div class="form-group">
+                        <label>Адрес доставки *</label>
+                        <input type="text" id="address" placeholder="Город, улица, дом, квартира">
+                    </div>
+                    <div class="form-group">
+                        <label>Комментарий к заказу</label>
+                        <textarea id="comment" rows="3" placeholder="Пожелания по доставке..."></textarea>
+                    </div>
+                </div>
+
+                <div class="checkout-summary">
+                    <h3>Ваш заказ</h3>
+                    ${orderItemsHtml}
+                    <div class="total-row">
+                        <span>Итого к оплате:</span>
+                        <span id="orderTotal">${total.toLocaleString()} &#8381;</span>
+                    </div>
+                    <div class="info-note">
+                        <i class="fas fa-truck"></i> Доставка: 1–3 рабочих дня<br>
+                        <i class="fas fa-credit-card"></i> Оплата при получении (наличные/карта)
+                    </div>
+                    <button class="pay-btn" id="submitOrderBtn">Оформить заказ</button>
+                </div>
+            </div>
+        `;
+
+        const submitBtn = document.getElementById('submitOrderBtn');
+        if (submitBtn) {
+            submitBtn.addEventListener('click', () => submitOrder(currentCart, total));
+        }
+    }
+
+    // Оформление заказа через API
+    async function submitOrder(cartItems, total) {
+        const fullName = document.getElementById('fullName')?.value.trim();
+        const email = document.getElementById('email')?.value.trim();
+        const phone = document.getElementById('phone')?.value.trim();
+        const address = document.getElementById('address')?.value.trim();
+        const comment = document.getElementById('comment')?.value.trim() || '';
+
+        document.querySelectorAll('.field-error').forEach(el => el.remove());
+        document.querySelectorAll('.error-border').forEach(el => el.classList.remove('error-border'));
+
+        let hasError = false;
+
+        if (!fullName || fullName.length < 2) {
+            showFieldError('fullName', !fullName ? 'Укажите ФИО' : 'ФИО — минимум 2 символа');
+            hasError = true;
+        }
+
+        if (!email || !email.includes('@')) {
+            showFieldError('email', !email ? 'Укажите email' : 'Введите корректный email');
+            hasError = true;
+        }
+
+        if (!phone) {
+            showFieldError('phone', 'Укажите номер телефона');
+            hasError = true;
+        } else {
+            const digits = phone.replace(/\D/g, '');
+            if (digits.length < 10 || digits.length > 12) {
+                showFieldError('phone', 'Введите корректный номер (10–12 цифр)');
+                hasError = true;
+            }
+        }
+
+        if (!address || address.length < 5) {
+            showFieldError('address', !address ? 'Укажите адрес доставки' : 'Введите полный адрес (город, улица, дом)');
+            hasError = true;
+        }
+
+        if (hasError) return;
+
+        const btn = document.getElementById('submitOrderBtn');
+        if (btn) { btn.disabled = true; btn.textContent = 'Оформляем...'; }
+
+        const orderId = 'ORD-' + Date.now();
+        const items = cartItems.map(item => ({
+            id: item.id,
+            name: item.name,
+            price: item.price,
+            quantity: item.quantity || 1,
+            total: item.price * (item.quantity || 1)
+        }));
+
+        try {
+            const res = await fetch('/api/orders', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    orderId,
+                    userEmail: currentUser.email,
+                    customerInfo: { fullName, email, phone, address, comment },
+                    items,
+                    total
+                })
+            });
+
+            if (!res.ok) {
+                const err = await res.json().catch(() => ({}));
+                throw new Error(err.error || 'Ошибка сервера');
+            }
+
+            // Очищаем корзину после успешного заказа
+            localStorage.removeItem('cart_' + currentUser.email);
+            cart = [];
+            updateCartBadge();
+
+            // Сохраняем заказ локально для истории
+            const ordersKey = 'orders_' + currentUser.email;
+            const existing = JSON.parse(localStorage.getItem(ordersKey) || '[]');
+            existing.push({
+                orderId,
+                date: new Date().toLocaleString('ru-RU'),
+                customer: { fullName, email, phone, address, comment },
+                items,
+                total,
+                status: 'Новый'
+            });
+            localStorage.setItem(ordersKey, JSON.stringify(existing));
+
+            alert('\u2705 \u0417\u0430\u043a\u0430\u0437 \u2116' + orderId + ' \u0443\u0441\u043f\u0435\u0448\u043d\u043e \u043e\u0444\u043e\u0440\u043c\u043b\u0435\u043d!\n\n' +
+                '\u0421\u043e\u0441\u0442\u0430\u0432 \u0437\u0430\u043a\u0430\u0437\u0430:\n' +
+                items.map(i => i.name + ' \u00d7 ' + i.quantity + ' = ' + i.total.toLocaleString() + ' \u20bd').join('\n') +
+                '\n\n\u0418\u0442\u043e\u0433\u043e: ' + total.toLocaleString() + ' \u20bd' +
+                '\n\u0410\u0434\u0440\u0435\u0441 \u0434\u043e\u0441\u0442\u0430\u0432\u043a\u0438: ' + address +
+                '\n\n\u0421 \u0432\u0430\u043c\u0438 \u0441\u0432\u044f\u0436\u0435\u0442\u0441\u044f \u0430\u0434\u043c\u0438\u043d\u0438\u0441\u0442\u0440\u0430\u0442\u043e\u0440 \u0434\u043b\u044f \u043f\u043e\u0434\u0442\u0432\u0435\u0440\u0436\u0434\u0435\u043d\u0438\u044f.');
+
+            window.location.href = 'cabinet.html';
+        } catch (err) {
+            if (btn) { btn.disabled = false; btn.textContent = 'Оформить заказ'; }
+            alert('\u041e\u0448\u0438\u0431\u043a\u0430 \u043f\u0440\u0438 \u043e\u0444\u043e\u0440\u043c\u043b\u0435\u043d\u0438\u0438 \u0437\u0430\u043a\u0430\u0437\u0430: ' + err.message);
+        }
+    }
+
+    function showFieldError(fieldId, message) {
+        const field = document.getElementById(fieldId);
+        if (!field) return;
+        field.classList.add('error-border');
+        const existing = field.parentElement.querySelector('.field-error');
+        if (existing) existing.remove();
+        const span = document.createElement('span');
+        span.className = 'field-error';
+        span.textContent = message;
+        field.parentElement.appendChild(span);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(renderCheckoutPage, 100);
+    });
+</script>
+</body>
+</html>

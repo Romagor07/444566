@@ -1,0 +1,21 @@
+/* Критические стили для первого экрана */
+body {
+    margin: 0;
+    font-family: 'Frank Ruhl Libre', 'Inter', sans-serif;
+    background: #f5f0ed;
+}
+.header-top-white {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    z-index: 1030;
+}
+.logo-img {
+    height: 70px;
+}
+.hero-video {
+    min-height: 400px;
+    background: #1a1a2e;
+}

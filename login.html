@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход - Формула здоровья</title>
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <a href="index.html" class="login-logo">
+                <img src="logo.webp" alt="Формула здоровья" class="login-logo-img">
+                <span class="login-logo-text">Формула здоровья</span>
+            </a>
+
+            <div class="tab-buttons" id="tabButtons">
+                <button class="tab-btn active" data-tab="login">Вход</button>
+                <button class="tab-btn" data-tab="register">Регистрация</button>
+            </div>
+
+            <div id="errorMessage" class="error-message"></div>
+            <div id="successMessage" class="success-message"></div>
+
+            <!-- Панель входа -->
+            <div id="loginPanel" class="form-panel active">
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label>E-mail *</label>
+                        <input type="email" id="loginEmail" placeholder="example@mail.com" required autocomplete="email">
+                    </div>
+                    <div class="form-group">
+                        <label>Пароль *</label>
+                        <input type="password" id="loginPassword" placeholder="••••••" required autocomplete="current-password">
+                    </div>
+                    <button type="submit" class="btn-submit">Войти</button>
+                    <div class="forgot-link">
+                        <span>Забыли пароль?</span>
+                        <a href="#" id="forgotLinkBtn">Восстановить</a>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Панель регистрации -->
+            <div id="registerPanel" class="form-panel">
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label>Имя и фамилия <span class="required-star">*</span></label>
+                        <input type="text" id="regName" placeholder="Иван Иванов" required autocomplete="name">
+                    </div>
+                    <div class="form-group">
+                        <label>E-mail <span class="required-star">*</span></label>
+                        <input type="email" id="regEmail" placeholder="example@mail.com" required autocomplete="email">
+                    </div>
+                    <div class="form-group">
+                        <label>Пароль (мин. 6 символов) <span class="required-star">*</span></label>
+                        <input type="password" id="regPassword" placeholder="••••••" required autocomplete="new-password">
+                    </div>
+                    <div class="form-group">
+                        <label>Телефон <span class="required-star">*</span></label>
+                        <input type="tel" id="regPhone" placeholder="+7 (___) ___-__-__" required autocomplete="tel">
+                    </div>
+                    <button type="submit" class="btn-submit">Зарегистрироваться</button>
+                    <div class="forgot-link">
+                        <span>Забыли пароль?</span>
+                        <a href="#" id="forgotLinkRegBtn">Восстановить</a>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Панель восстановления пароля -->
+            <div id="resetPanel" class="reset-panel">
+                <h3 class="reset-title">Восстановление пароля</h3>
+                <div class="form-group">
+                    <input type="email" id="resetEmailInput" placeholder="Укажите ваш E-mail">
+                </div>
+                <button class="btn-submit" id="resetPasswordBtnNew">Отправить</button>
+                <div style="text-align:center;">
+                    <a href="#" id="backToLoginBtn" class="back-link">← Вернуться ко входу</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+</body>
+</html>

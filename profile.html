@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Мой профиль - Формула здоровья</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="responsive.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Дополнительные стили специально для страницы профиля */
+        .profile-page-wrapper {
+            background: #f5f0ed;
+            min-height: 100vh;
+            padding: 30px 0 60px;
+        }
+        
+        .profile-grid-layout {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 30px;
+            align-items: start;
+        }
+        
+        /* Левая колонка с аватаркой и блоками */
+        .profile-sidebar {
+            position: sticky;
+            top: 180px;
+        }
+        
+        .profile-avatar-card {
+            background: white;
+            border-radius: 24px;
+            padding: 30px 20px;
+            text-align: center;
+            margin-bottom: 25px;
+            border: 1px solid #e8ddd7;
+            transition: 0.2s;
+        }
+        
+        .profile-avatar-wrapper {
+            position: relative;
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 20px;
+            cursor: pointer;
+        }
+        
+        .profile-avatar-wrapper img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #64b61a;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .avatar-edit-icon {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            background: #64b61a;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            border: 2px solid white;
+            transition: 0.2s;
+        }
+        
+        .avatar-edit-icon:hover {
+            background: #e8be52;
+            transform: scale(1.05);
+        }
+        
+        .profile-name-side {
+            font-size: 20px;
+            font-weight: 700;
+            color: #46211A;
+            margin-bottom: 8px;
+        }
+        
+        .profile-email-side {
+            font-size: 14px;
+            color: #64b61a;
+            word-break: break-all;
+        }
+        
+        /* Блоки с действиями */
+        .profile-actions-card {
+            background: white;
+            border-radius: 24px;
+            padding: 8px;
+            border: 1px solid #e8ddd7;
+        }
+        
+        .profile-action-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 14px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #46211A;
+            font-weight: 500;
+        }
+        
+        .profile-action-item.active {
+            background: #f0f7ea;
+            color: #64b61a;
+        }
+        
+        .profile-action-item.active i {
+            color: #64b61a;
+        }
+        
+        .profile-action-item:hover:not(.active) {
+            background: #f9f6f3;
+            transform: translateX(5px);
+        }
+        
+        /* Правая колонка - контент */
+        .profile-content-card {
+            background: white;
+            border-radius: 24px;
+            border: 1px solid #e8ddd7;
+            overflow: hidden;
+        }
+        
+        .profile-tab-pane {
+            display: none;
+            padding: 35px;
+        }
+        
+        .profile-tab-pane.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .pane-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #46211A;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #64b61a;
+            display: inline-block;
+        }
+        
+        /* Стили для полей данных */
+        .info-field {
+            margin-bottom: 20px;
+            display: flex;
+            border-bottom: 1px solid #e8ddd7;
+            padding-bottom: 15px;
+        }
+        
+        .info-label {
+            width: 150px;
+            font-weight: 600;
+            color: #46211A;
+        }
+        
+        .info-value {
+            flex: 1;
+            color: #693D3D;
+        }
+        
+        /* Форма редактирования */
+        .edit-form {
+            display: none;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #e8ddd7;
+        }
+        
+        .edit-form.active {
+            display: block;
+        }
+        
+        .form-row {
+            margin-bottom: 20px;
+        }
+        
+        .form-row label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #46211A;
+        }
+        
+        .form-row input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #e8ddd7;
+            border-radius: 16px;
+            font-family: inherit;
+            background: #faf8f7;
+        }
+        
+        .form-row input:focus {
+            outline: none;
+            border-color: #64b61a;
+        }
+        
+        .btn-secondary-custom {
+            background: #e8ddd7;
+            color: #46211A;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-left: 12px;
+        }
+        
+        /* История заказов */
+        .orders-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .order-card {
+            background: #f9f6f3;
+            border-radius: 20px;
+            padding: 20px;
+            border: 1px solid #e8ddd7;
+        }
+        
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e8ddd7;
+        }
+        
+        .order-date {
+            color: #693D3D;
+            font-size: 14px;
+        }
+        
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #e8ddd7;
+        }
+        
+        .empty-orders {
+            text-align: center;
+            padding: 40px;
+            color: #693D3D;
+        }
+        
+        /* Смена пароля */
+        .password-field {
+            margin-bottom: 20px;
+        }
+        
+        .password-field label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #46211A;
+        }
+        
+        .password-field input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e8ddd7;
+            border-radius: 16px;
+            background: #faf8f7;
+        }
+        
+        /* Блок восстановления пароля */
+        .reset-password-block {
+            display: none;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #e8ddd7;
+        }
+        
+        .reset-password-block h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #46211A;
+        }
+        
+        .reset-password-block p {
+            font-size: 13px;
+            color: #693D3D;
+            margin-bottom: 15px;
+        }
+        
+        .new-password-result {
+            display: none;
+            margin-top: 15px;
+            padding: 12px;
+            background: #f0f7ea;
+            border-radius: 12px;
+            border-left: 3px solid #64b61a;
+        }
+        
+        .new-password-result strong {
+            color: #64b61a;
+        }
+        
+        .generated-password {
+            font-size: 18px;
+            font-weight: bold;
+            font-family: monospace;
+            display: block;
+            margin: 8px 0;
+            color: #46211A;
+        }
+        
+        .copy-password-btn {
+            background: #000000;
+            color: white;
+            border: none;
+            padding: 6px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        
+        .copy-password-btn:hover {
+            background: #333333;
+        }
+        
+        .forgot-password-link {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: #64b61a;
+            text-decoration: underline;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        .forgot-password-link:hover {
+            color: #4d8e14;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @media (max-width: 900px) {
+            .profile-grid-layout {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .profile-sidebar {
+                position: static;
+            }
+            .profile-tab-pane {
+                padding: 25px;
+            }
+            .info-field {
+                flex-direction: column;
+                gap: 8px;
+            }
+            .info-label {
+                width: 100%;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .profile-tab-pane {
+                padding: 20px;
+            }
+            .pane-title {
+                font-size: 20px;
+            }
+        }
+        
+        /* Скрыть input file */
+        #avatarInput {
+            display: none;
+        }
+
+        /* Кнопка "Забыли пароль" */
+        .forgot-password-btn {
+            background: #000000 !important;
+            color: #ffffff !important;
+            border: 1px solid #000000 !important;
+            border-radius: 40px !important;
+            padding: 8px 24px !important;
+            font-size: 14px !important;
+            font-weight: 500 !important;
+            cursor: pointer !important;
+            transition: all 0.3s ease !important;
+        }
+
+        .forgot-password-btn:hover {
+            background: #ffffff !important;
+            color: #000000 !important;
+            border: 1px solid #000000 !important;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+
+<div id="header-placeholder"></div>
+
+<div class="profile-page-wrapper">
+    <div class="container">
+        <div class="profile-grid-layout">
+            
+            <!-- ЛЕВАЯ КОЛОНКА: Аватар + меню -->
+            <div class="profile-sidebar">
+                <div class="profile-avatar-card">
+                    <div class="profile-avatar-wrapper" id="avatarEditTrigger">
+                        <img id="avatarImg" src="images/default-avatar.png" alt="Аватар">
+                        <div class="avatar-edit-icon">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                        <input type="file" id="avatarInput" accept="image/*">
+                    </div>
+                    <div class="profile-name-side" id="sidebarName">Загрузка...</div>
+                    <div class="profile-email-side" id="sidebarEmail"></div>
+                </div>
+                
+                <div class="profile-actions-card">
+                    <div class="profile-action-item" data-tab="personal">
+                        <i class="fas fa-user-circle"></i> <span>Личные данные</span>
+                    </div>
+                    <div class="profile-action-item" data-tab="password">
+                        <i class="fas fa-key"></i> <span>Смена пароля</span>
+                    </div>
+                    <div class="profile-action-item" data-tab="orders">
+                        <i class="fas fa-history"></i> <span>История заказов</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ПРАВАЯ КОЛОНКА: Контент -->
+            <div class="profile-content-card">
+                
+                <!-- Вкладка: Личные данные -->
+                <div id="personalTab" class="profile-tab-pane active">
+                    <div class="pane-title">Личные данные</div>
+                    
+                    <div class="info-field">
+                        <div class="info-label">Имя и фамилия</div>
+                        <div class="info-value" id="displayName">—</div>
+                    </div>
+                    <div class="info-field">
+                        <div class="info-label">Email</div>
+                        <div class="info-value" id="displayEmail">—</div>
+                    </div>
+                    <div class="info-field">
+                        <div class="info-label">Телефон</div>
+                        <div class="info-value" id="displayPhone">—</div>
+                    </div>
+                    <div class="info-field">
+                        <div class="info-label">Дата регистрации</div>
+                        <div class="info-value" id="displayRegDate">—</div>
+                    </div>
+                    
+                    <button class="btn-primary-custom" id="editProfileBtn">Редактировать</button>
+                    
+                    <div id="editForm" class="edit-form">
+                        <div class="form-row">
+                            <label>Имя и фамилия</label>
+                            <input type="text" id="editName" placeholder="Иван Иванов">
+                        </div>
+                        <div class="form-row">
+                            <label>Email</label>
+                            <input type="email" id="editEmail" placeholder="example@mail.com">
+                        </div>
+                        <div class="form-row">
+                            <label>Телефон</label>
+                            <input type="tel" id="editPhone" placeholder="+7 (___) ___-__-__">
+                        </div>
+                        <div>
+                            <button class="btn-primary-custom" id="saveProfileBtn">Сохранить</button>
+                            <button class="btn-secondary-custom" id="cancelEditBtn">Отмена</button>
+                        </div>
+                    </div>
+                    
+                    <button class="btn-danger-custom" id="logoutProfileBtn">Выйти из аккаунта</button>
+                </div>
+                
+                <!-- Вкладка: Смена пароля -->
+<div id="passwordTab" class="profile-tab-pane">
+    <div class="pane-title">Смена пароля</div>
+    <div class="password-field">
+        <label>Текущий пароль</label>
+        <input type="password" id="oldPassword" placeholder="Введите текущий пароль">
+    </div>
+    <div class="password-field">
+        <label>Новый пароль (мин. 6 символов)</label>
+        <input type="password" id="newPassword" placeholder="Новый пароль">
+    </div>
+    <div class="password-field">
+        <label>Подтверждение пароля</label>
+        <input type="password" id="confirmPassword" placeholder="Подтвердите пароль">
+    </div>
+    <button class="btn-primary-custom" id="changePasswordBtn">Сменить пароль</button>
+    
+    <!-- Кнопка "Забыли пароль" в обводке -->
+    <div style="text-align: center; margin-top: 20px;">
+        <button class="forgot-password-btn" id="forgotPasswordBtn" style="background: #000000; color: #ffffff; border: 1px solid #000000; border-radius: 40px; padding: 8px 24px; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.3s ease;">Забыли пароль?</button>
+    </div>
+    
+    <!-- Блок восстановления пароля (скрыт по умолчанию) -->
+    <div id="resetPasswordBlock" class="reset-password-block">
+        <h4>Восстановление пароля</h4>
+        <p>Введите ваш email, и мы предложим новый пароль</p>
+        <div class="password-field">
+            <label>Ваш email</label>
+            <input type="email" id="resetEmail" placeholder="example@mail.com">
+        </div>
+        <button class="btn-primary-custom" id="generateNewPasswordBtn" style="background: #ffffff !important; color: #000000 !important; border: 1px solid #000000 !important; margin-top: 5px;">Сгенерировать новый пароль</button>
+        
+        <div id="newPasswordResult" class="new-password-result">
+            <strong>✨ Новый пароль:</strong>
+            <span id="generatedPassword" class="generated-password"></span>
+            <p style="font-size: 12px; color: #693D3D; margin-top: 8px;">Сохраните этот пароль в надёжном месте. Вы сможете изменить его после входа.</p>
+            <button id="copyPasswordBtn" class="copy-password-btn">📋 Скопировать пароль</button>
+        </div>
+    </div>
+</div>
+                
+                <!-- Вкладка: История заказов -->
+                <div id="ordersTab" class="profile-tab-pane">
+                    <div class="pane-title">История заказов</div>
+                    <div id="ordersList" class="orders-list">
+                        <div class="empty-orders">У вас пока нет заказов</div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="footer-placeholder"></div>
+
+<script src="script.js"></script>
+<script>
+    (function() {
+        // Проверка авторизации через глобальный currentUser (из script.js)
+        if (typeof currentUser === 'undefined' || !currentUser) {
+            window.location.href = 'login.html';
+            return;
+        }
+        
+        let users = JSON.parse(localStorage.getItem('users')) || [];
+        
+        // Функции форматирования
+        function formatDate(dateString) {
+            if (!dateString) return '—';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('ru-RU');
+        }
+        
+        // Обновить интерфейс (левая панель + данные)
+        function refreshPersonalDisplay() {
+            // Левая панель
+            const sidebarName = document.getElementById('sidebarName');
+            const sidebarEmail = document.getElementById('sidebarEmail');
+            const avatarImg = document.getElementById('avatarImg');
+            
+            if (sidebarName) sidebarName.textContent = currentUser.name || 'Пользователь';
+            if (sidebarEmail) sidebarEmail.textContent = currentUser.email || '';
+            if (avatarImg && currentUser.avatar) avatarImg.src = currentUser.avatar;
+            
+            // Основные поля
+            const displayName = document.getElementById('displayName');
+            const displayEmail = document.getElementById('displayEmail');
+            const displayPhone = document.getElementById('displayPhone');
+            const displayRegDate = document.getElementById('displayRegDate');
+            const editName = document.getElementById('editName');
+            const editEmail = document.getElementById('editEmail');
+            const editPhone = document.getElementById('editPhone');
+            
+            if (displayName) displayName.textContent = currentUser.name || '—';
+            if (displayEmail) displayEmail.textContent = currentUser.email || '—';
+            if (displayPhone) displayPhone.textContent = currentUser.phone || '—';
+            if (displayRegDate) displayRegDate.textContent = formatDate(currentUser.regDate) || '—';
+            if (editName) editName.value = currentUser.name || '';
+            if (editEmail) editEmail.value = currentUser.email || '';
+            if (editPhone) editPhone.value = currentUser.phone || '';
+        }
+        
+        // Обновление аватарки
+        function updateAvatar(imageData) {
+            currentUser.avatar = imageData;
+            const userIndex = users.findIndex(u => u.email === currentUser.email);
+            if (userIndex !== -1) {
+                users[userIndex].avatar = imageData;
+                localStorage.setItem('users', JSON.stringify(users));
+                sessionStorage.setItem('currentUser', JSON.stringify(currentUser));
+            }
+            const avatarImg = document.getElementById('avatarImg');
+            if (avatarImg) avatarImg.src = imageData;
+        }
+        
+        // Загрузка аватарки
+        const avatarInput = document.getElementById('avatarInput');
+        const avatarTrigger = document.getElementById('avatarEditTrigger');
+        if (avatarTrigger && avatarInput) {
+            avatarTrigger.addEventListener('click', () => avatarInput.click());
+            avatarInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (ev) => updateAvatar(ev.target.result);
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+        
+        // Отображение заказов
+        function displayOrders() {
+            const ordersKey = `orders_${currentUser.email}`;
+            const orders = JSON.parse(localStorage.getItem(ordersKey) || '[]');
+            const container = document.getElementById('ordersList');
+            if (!container) return;
+            
+            if (orders.length === 0) {
+                container.innerHTML = '<div class="empty-orders">У вас пока нет заказов</div>';
+                return;
+            }
+            
+            container.innerHTML = orders.reverse().map(order => `
+                <div class="order-card">
+                    <div class="order-header">
+                        <span class="order-id">Заказ №${order.orderId}</span>
+                        <span class="order-date">${order.date}</span>
+                    </div>
+                    <div class="order-items">
+                        ${order.items.map(item => `
+                            <div class="order-item">
+                                <span>${escapeHtml(item.name)} × ${item.quantity}</span>
+                                <span>${item.total.toLocaleString()} ₽</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="order-total">Итого: ${order.total.toLocaleString()} ₽</div>
+                </div>
+            `).join('');
+        }
+        
+        // Сохранение профиля
+        const saveBtn = document.getElementById('saveProfileBtn');
+        const cancelEdit = document.getElementById('cancelEditBtn');
+        const editForm = document.getElementById('editForm');
+        const editProfileBtn = document.getElementById('editProfileBtn');
+        
+        if (saveBtn) {
+            saveBtn.addEventListener('click', () => {
+                const newName = document.getElementById('editName').value;
+                const newEmail = document.getElementById('editEmail').value;
+                const newPhone = document.getElementById('editPhone').value;
+                
+                const userIndex = users.findIndex(u => u.email === currentUser.email);
+                if (userIndex !== -1) {
+                    users[userIndex].name = newName;
+                    users[userIndex].email = newEmail;
+                    users[userIndex].phone = newPhone;
+                    localStorage.setItem('users', JSON.stringify(users));
+                    currentUser = users[userIndex];
+                    sessionStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    refreshPersonalDisplay();
+                    if (editForm) editForm.classList.remove('active');
+                    alert('Данные успешно сохранены!');
+                }
+            });
+        }
+        
+        if (editProfileBtn && editForm) {
+            editProfileBtn.addEventListener('click', () => editForm.classList.add('active'));
+        }
+        if (cancelEdit && editForm) {
+            cancelEdit.addEventListener('click', () => editForm.classList.remove('active'));
+        }
+        
+        // ========== ВОССТАНОВЛЕНИЕ ПАРОЛЯ ==========
+        const forgotLink = document.getElementById('forgotPasswordBtn');
+        const resetBlock = document.getElementById('resetPasswordBlock');
+        
+        // Открыть/закрыть блок восстановления
+        if (forgotLink && resetBlock) {
+            forgotLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (resetBlock.style.display === 'none' || getComputedStyle(resetBlock).display === 'none') {
+                    resetBlock.style.display = 'block';
+                    // Подставляем текущий email пользователя
+                    const resetEmailInput = document.getElementById('resetEmail');
+                    if (resetEmailInput && currentUser && currentUser.email) {
+                        resetEmailInput.value = currentUser.email;
+                    }
+                } else {
+                    resetBlock.style.display = 'none';
+                }
+            });
+        }
+        
+        // Генерация нового пароля
+        const generateBtn = document.getElementById('generateNewPasswordBtn');
+        if (generateBtn) {
+            generateBtn.addEventListener('click', () => {
+                const resetEmail = document.getElementById('resetEmail').value.trim();
+                
+                if (!resetEmail) {
+                    alert('Пожалуйста, укажите ваш email');
+                    return;
+                }
+                
+                // Генерируем новый пароль (10 символов)
+                const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789';
+                let newPassword = '';
+                for (let i = 0; i < 10; i++) {
+                    newPassword += chars.charAt(Math.floor(Math.random() * chars.length));
+                }
+                
+                // Обновляем пароль в localStorage
+                let users = JSON.parse(localStorage.getItem('users')) || [];
+                const userIndex = users.findIndex(u => u.email === resetEmail);
+                
+                if (userIndex !== -1) {
+                    users[userIndex].password = newPassword;
+                    localStorage.setItem('users', JSON.stringify(users));
+                    
+                    // Если это текущий пользователь, обновляем сессию
+                    if (currentUser && currentUser.email === resetEmail) {
+                        currentUser.password = newPassword;
+                        sessionStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    }
+                    
+                    // Показываем сгенерированный пароль
+                    document.getElementById('generatedPassword').textContent = newPassword;
+                    document.getElementById('newPasswordResult').style.display = 'block';
+                    
+                    // Очищаем поля старого пароля
+                    const oldPassInput = document.getElementById('oldPassword');
+                    if (oldPassInput) oldPassInput.value = '';
+                    
+                } else {
+                    alert('❌ Пользователь с таким email не найден');
+                }
+            });
+        }
+        
+        // Копирование пароля в буфер обмена
+        const copyBtn = document.getElementById('copyPasswordBtn');
+        if (copyBtn) {
+            copyBtn.addEventListener('click', () => {
+                const passwordSpan = document.getElementById('generatedPassword');
+                const password = passwordSpan.textContent;
+                
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(password).then(() => {
+                        copyBtn.textContent = '✅ Скопировано!';
+                        setTimeout(() => {
+                            copyBtn.textContent = '📋 Скопировать пароль';
+                        }, 2000);
+                    }).catch(() => {
+                        alert('Не удалось скопировать пароль');
+                    });
+                } else {
+                    // Fallback для старых браузеров
+                    const textarea = document.createElement('textarea');
+                    textarea.value = password;
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textarea);
+                    copyBtn.textContent = '✅ Скопировано!';
+                    setTimeout(() => {
+                        copyBtn.textContent = '📋 Скопировать пароль';
+                    }, 2000);
+                }
+            });
+        }
+        
+        // Выход
+        const logoutBtn = document.getElementById('logoutProfileBtn');
+        if (logoutBtn && typeof window.logout === 'function') {
+            logoutBtn.addEventListener('click', () => window.logout());
+        } else if (logoutBtn) {
+            logoutBtn.addEventListener('click', () => {
+                sessionStorage.removeItem('currentUser');
+                window.location.href = 'index.html';
+            });
+        }
+        
+        // Переключение вкладок (левое меню)
+        const actionItems = document.querySelectorAll('.profile-action-item');
+        const tabs = {
+            personal: document.getElementById('personalTab'),
+            password: document.getElementById('passwordTab'),
+            orders: document.getElementById('ordersTab')
+        };
+        
+        function activateTab(tabId) {
+            Object.keys(tabs).forEach(id => {
+                if (tabs[id]) tabs[id].classList.remove('active');
+            });
+            if (tabs[tabId]) tabs[tabId].classList.add('active');
+            
+            actionItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.dataset.tab === tabId) item.classList.add('active');
+            });
+            
+            if (tabId === 'orders') displayOrders();
+        }
+        
+        actionItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const tabId = item.dataset.tab;
+                if (tabId) activateTab(tabId);
+            });
+        });
+        
+        // Добавляем дату регистрации, если отсутствует
+        if (!currentUser.regDate) {
+            const userIndex = users.findIndex(u => u.email === currentUser.email);
+            if (userIndex !== -1) {
+                users[userIndex].regDate = new Date().toISOString();
+                localStorage.setItem('users', JSON.stringify(users));
+                currentUser.regDate = users[userIndex].regDate;
+                sessionStorage.setItem('currentUser', JSON.stringify(currentUser));
+            }
+        }
+        
+        // Инициализация
+        refreshPersonalDisplay();
+        
+        // По умолчанию активна вкладка "Личные данные"
+        activateTab('personal');
+    })();
+
+    // Фикс для кнопки "Редактировать"
+    document.addEventListener('DOMContentLoaded', function() {
+        const editProfileBtn = document.getElementById('editProfileBtn');
+        const editForm = document.getElementById('editForm');
+        
+        if (editProfileBtn && editForm) {
+            const newBtn = editProfileBtn.cloneNode(true);
+            editProfileBtn.parentNode.replaceChild(newBtn, editProfileBtn);
+            
+            newBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                editForm.classList.toggle('active');
+            });
+        }
+    });
+</script>
+</body>
+</html>

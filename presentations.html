@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Презентации - Формула здоровья</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="responsive.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+
+<div id="header-placeholder"></div>
+
+<main class="presentations-page">
+    <div class="container">
+        <h1 class="page-title">Презентации продукции</h1>
+        <div class="presentations-grid">
+            
+            <!-- Презентация 1: Здоровье -->
+            <div class="presentation-card" id="health">
+                <div class="presentation-image">
+                    <img src="images/verum.webp" alt="Линия Здоровье" onerror="this.parentElement.innerHTML='<i class=\'fas fa-leaf\' style=\'font-size: 60px; color: #64b61a;\'></i>'">
+                </div>
+                <h3>Линия Здоровье</h3>
+                <p>Презентация БАДов и витаминов VERUM. Узнайте о преимуществах натуральных компонентов и инновационных формулах.</p>
+                <button class="btn-presentation open-video-modal-btn" data-video-src="презентация бадов.mp4" data-video-title="Презентация всей линейки Здоровье VERUM">Смотреть презентацию →</button>
+            </div>
+            
+            <!-- Презентация 2: Красота -->
+            <div class="presentation-card" id="beauty">
+                <div class="presentation-image">
+                    <img src="jenel.webp" alt="Линия Красота" onerror="this.parentElement.innerHTML='<i class=\'fas fa-spa\' style=\'font-size: 60px; color: #64b61a;\'></i>'">
+                </div>
+                <h3>Линия Красота</h3>
+                <p>Презентация косметики Jenel. Откройте секреты молодости и сияющей кожи с нашей профессиональной косметикой.</p>
+                <button class="btn-presentation open-video-modal-btn" data-video-src="презентация jenel.mp4" data-video-title="Презентация косметики Jenel, FUNDESEE">Смотреть презентацию →</button>
+            </div>           
+            
+            <!-- Презентация 3: VERUM Global (Бизнес) -->
+            <div class="presentation-card" id="business">
+                <div class="presentation-image">
+                    <img src="fundesee.webp" alt="Бизнес-презентация VERUM" onerror="this.parentElement.innerHTML='<i class=\'fas fa-chart-line\' style=\'font-size: 60px; color: #64b61a;\'></i>'">
+                </div>
+                <h3>Презентация премиум косметики FUNDESEE</h3>
+                <p>Забудьте о возрастных изминениях с роскошным уходом FUNDESEE! Эта уникальная косметическая линейка.</p>
+                <button class="btn-presentation open-video-modal-btn" data-video-src="fundesee.mp4" data-video-title="Бизнес-презентация VERUM Global">Смотреть презентация →</button>
+            </div>
+            
+            <!-- Презентация 4: WHIEDA -->
+            <div class="presentation-card" id="whieda">
+                <div class="presentation-image">
+                    <img src="whieda.webp" alt="WHIEDA - международная ассоциация" onerror="this.parentElement.innerHTML='<i class=\'fas fa-globe\' style=\'font-size: 60px; color: #64b61a;\'></i>'">
+                </div>
+                <h3>WHIEDA - международная ассоциация</h3>
+                <p>История, миссия и ценности компании WHIEDA. Наши партнеры и направления деятельности.</p>
+                <button class="btn-presentation open-video-modal-btn" data-video-src="международная ассоциация.mp4" data-video-title="WHIEDA - международная ассоциация здоровья и процветания">Смотреть презентацию →</button>
+            </div>
+
+            <!-- Презентация 5: Foherb (Массажёр Magic Foherb) -->
+            <div class="presentation-card" id="foherb">
+                <div class="presentation-image">
+                    <img src="foherb.webp" alt="Magic Foherb массажёр" onerror="this.parentElement.innerHTML='<i class=\'fas fa-hand-sparkles\' style=\'font-size: 60px; color: #64b61a;\'></i>'">
+                </div>
+                <h3>Magic Foherb - биоэнергетический массажёр</h3>
+                <p>Инновационный биоэнергетический прибор для восстановления организма. Улучшает кровообращение, снимает усталость и повышает жизненный тонус.</p>
+                <button class="btn-presentation open-video-modal-btn" data-video-src="foherb.mp4" data-video-title="Презентация массажёра Magic Foherb">Смотреть презентацию →</button>
+            </div>
+
+            <!-- НОВАЯ ПРЕЗЕНТАЦИЯ 6: ATOMY -->
+            <div class="presentation-card" id="atomy">
+                <div class="presentation-image">
+                    <!-- Замените src на путь к вашему изображению для этой карточки -->
+                    <img src="atomy.webp" alt="Презентация ATOMY" onerror="this.parentElement.innerHTML='<i class=\'fas fa-store\' style=\'font-size: 60px; color: #64b61a;\'></i>'">
+                </div>
+                <h3>Презентация ATOMY</h3>
+                <p>В видео презентации рассматривается Атоми, онлайн-гипермаркет, предлагающий товары премиум-класса для здоровья, красоты и дома, произведенные и продаваемые в Корее.</p>
+                <button class="btn-presentation open-video-modal-btn" data-video-src="atomy.mp4" data-video-title="Презентация ATOMY - онлайн-гипермаркет премиум-класса">Смотреть презентацию →</button>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Модальное окно для видео -->
+<div id="videoModal" class="video-modal">
+    <div class="video-modal-close"></div>
+    <div class="video-modal-content">
+        <video id="modalVideo" controls preload="metadata">
+            <source src="" type="video/mp4">
+            Ваш браузер не поддерживает видео.
+        </video>
+        <div class="video-modal-title" id="modalVideoTitle">Видео презентация</div>
+    </div>
+</div>
+
+<div id="footer-placeholder"></div>
+
+<script src="script.js"></script>
+</body>
+</html>

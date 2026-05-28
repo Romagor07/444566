@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Карта офиса - Формула здоровья</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="responsive.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=ваш_api_ключ&lang=ru_RU" type="text/javascript"></script>
+    <style>
+        .map-container { max-width: 1200px; margin: 30px auto 60px; padding: 0 20px; }
+        .map-card { background: white; border-radius: 32px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .map-header { padding: 30px; text-align: center; border-bottom: 1px solid #e8ddd7; }
+        .map-header h1 { font-size: 32px; color: #46211A; margin-bottom: 10px; }
+        #map { height: 500px; width: 100%; }
+        .address-info { padding: 30px; text-align: center; background: #faf8f7; }
+        .address-info h3 { color: #64b61a; margin-bottom: 15px; }
+        .address-info p { color: #46211A; font-size: 18px; margin-bottom: 10px; }
+        .address-info i { color: #64b61a; margin-right: 10px; }
+        @media (max-width: 768px) { .map-container { margin: 100px 15px 40px; } .map-header h1 { font-size: 24px; } #map { height: 350px; } }
+    </style>
+</head>
+<body>
+
+<div id="header-placeholder"></div>
+
+<div class="map-container">
+    <div class="map-card">
+        <div class="map-header">
+            <h1>Наше местоположение</h1>
+            <p>Представительство компании "Формула здоровья"</p>
+        </div>
+        <div id="map"></div>
+        <div class="address-info">
+            <h3><i class="fas fa-map-marker-alt"></i> Адрес</h3>
+            <p>г. Нефтеюганск, 2-й микрорайон, дом 18</p>
+            <p><i class="fas fa-phone"></i> +7 (932) 404-15-09</p>
+            <p><i class="fas fa-envelope"></i> formula-health1@mail.ru</p>
+            <p><i class="fas fa-clock"></i> Пн-Пт: 9:00 - 18:00, Сб: 10:00 - 16:00</p>
+        </div>
+    </div>
+</div>
+
+<div id="footer-placeholder"></div>
+
+<script src="script.js"></script>
+<script>
+    ymaps.ready(init);
+    function init() {
+        var officeCoordinates = [61.087925, 72.612560];
+        var myMap = new ymaps.Map("map", { center: officeCoordinates, zoom: 17, controls: ['zoomControl', 'fullscreenControl'] });
+        var myPlacemark = new ymaps.Placemark(officeCoordinates, {
+            hintContent: 'Формула здоровья',
+            balloonContent: '<strong>Формула здоровья</strong><br>г. Нефтеюганск, 2-й микрорайон, дом 18'
+        }, { preset: 'islands#greenDotIcon', iconColor: '#64b61a' });
+        myMap.geoObjects.add(myPlacemark);
+    }
+</script>
+</body>
+</html>

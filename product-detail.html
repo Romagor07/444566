@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Товар - Формула здоровья</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="responsive.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .product-detail { padding: 30px 0 60px; background: #fff; }
+        .product-main { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; margin-bottom: 50px; }
+        .product-gallery { background: #f9f6f3; border-radius: 24px; padding: 40px; text-align: center; }
+        .product-gallery img { max-width: 100%; max-height: 400px; object-fit: contain; }
+        .product-info-detail h1 { font-size: 42px; font-weight: 800; color: #46211A; margin-bottom: 10px; }
+        .product-subtitle { font-size: 18px; color: #64b61a; margin-bottom: 15px; }
+        .product-desc-short { font-size: 16px; color: #693D3D; margin-bottom: 20px; line-height: 1.5; }
+        .product-specs { margin-bottom: 25px; }
+        .spec-item { display: flex; gap: 15px; margin-bottom: 12px; font-size: 14px; }
+        .spec-label { width: 120px; font-weight: 600; color: #46211A; }
+        .spec-value { color: #693D3D; }
+        .product-price-detail { font-size: 36px; font-weight: 800; color: #64b61a; margin-bottom: 25px; }
+        .btn-buy-detail { background: #64b61a; color: white; border: none; padding: 15px 40px; border-radius: 50px; font-size: 18px; font-weight: 600; cursor: pointer; transition: 0.3s; width: 100%; max-width: 250px; }
+        .btn-buy-detail:hover { background: #4d8e14; transform: translateY(-2px); }
+        .product-tabs { margin-top: 50px; }
+        .tabs-header { display: flex; flex-wrap: wrap; gap: 5px; border-bottom: 2px solid #e8ddd7; margin-bottom: 30px; }
+        .tab-btn { background: none; border: none; padding: 12px 24px; font-size: 16px; font-weight: 600; color: #693D3D; cursor: pointer; transition: 0.3s; font-family: inherit; }
+        .tab-btn:hover { color: #64b61a; }
+        .tab-btn.active { color: #64b61a; position: relative; }
+        .tab-btn.active::after { content: ''; position: absolute; bottom: -2px; left: 0; right: 0; height: 2px; background: #64b61a; }
+        .tab-content { display: none; padding: 20px 0; line-height: 1.6; color: #46211A; }
+        .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+        .back-link { display: inline-flex; align-items: center; gap: 8px; color: #64b61a; text-decoration: none; margin-bottom: 20px; font-weight: 500; }
+        .back-link:hover { transform: translateX(-3px); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @media (max-width: 768px) { .product-detail { padding: 100px 0 40px; } .product-main { grid-template-columns: 1fr; gap: 30px; } .product-info-detail h1 { font-size: 32px; } .tab-btn { padding: 10px 16px; font-size: 14px; } }
+    </style>
+</head>
+<body>
+
+<div id="header-placeholder"></div>
+
+<main class="product-detail">
+    <div class="container">
+        <a href="javascript:history.back()" class="back-link"><i class="fas fa-arrow-left"></i> Назад</a>
+        <div class="product-main">
+            <div class="product-gallery"><img id="productImage" src="" alt=""></div>
+            <div class="product-info-detail">
+                <h1 id="productName"></h1>
+                <div class="product-subtitle" id="productSubtitle"></div>
+                <div class="product-desc-short" id="productShortDesc"></div>
+                <div class="product-specs"><div class="spec-item"><span class="spec-label">Объем:</span><span class="spec-value" id="productVolume"></span></div></div>
+                <div class="product-price-detail" id="productPrice"></div>
+                <button class="btn-buy-detail" id="buyBtn">В корзину</button>
+            </div>
+        </div>
+        <div class="product-tabs">
+            <div class="tabs-header">
+                <button class="tab-btn active" data-tab="description">Описание</button>
+                <button class="tab-btn" data-tab="composition">Состав</button>
+                <button class="tab-btn" data-tab="properties">Результат использования</button>
+                <button class="tab-btn" data-tab="recommendations">Рекомендации</button>
+            </div>
+            <div id="description" class="tab-content active"><div id="descriptionContent"></div></div>
+            <div id="composition" class="tab-content"><div id="compositionContent"></div></div>
+            <div id="properties" class="tab-content"><div id="propertiesContent"></div></div>
+            <div id="recommendations" class="tab-content"><div id="recommendationsContent"></div></div>
+        </div>
+    </div>
+</main>
+
+<div id="footer-placeholder"></div>
+
+<script src="script.js"></script>
+<script>
+    function getProductId() { return new URLSearchParams(window.location.search).get('id'); }
+    
+    function loadProductDetail() {
+        const productId = getProductId();
+        const product = allProducts.find(p => p.id === productId);
+        if (!product) { document.body.innerHTML = '<div style="text-align:center; padding:100px"><h1>Товар не найден</h1><a href="index.html">Вернуться на главную</a></div>'; return; }
+        document.title = `${product.name} - Формула здоровья`;
+        document.getElementById('productName').textContent = product.name;
+        document.getElementById('productSubtitle').textContent = product.subtitle || '';
+        document.getElementById('productShortDesc').textContent = product.desc || '';
+        document.getElementById('productVolume').textContent = product.volume || '—';
+        document.getElementById('productPrice').textContent = `${product.price.toLocaleString()} ₽`;
+        document.getElementById('productImage').src = product.image;
+        document.getElementById('descriptionContent').innerHTML = product.description || '<p>Описание отсутствует</p>';
+        document.getElementById('compositionContent').innerHTML = product.composition || '<p>Состав не указан</p>';
+        document.getElementById('propertiesContent').innerHTML = product.properties || '<p>Информация отсутствует</p>';
+        document.getElementById('recommendationsContent').innerHTML = product.recommendations || '<p>Рекомендации отсутствуют</p>';
+    }
+    
+    function initProductTabs() {
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tabId = btn.dataset.tab;
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+    }
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        loadProductDetail();
+        initProductTabs();
+        const buyBtn = document.getElementById('buyBtn');
+        if (buyBtn) {
+            buyBtn.addEventListener('click', () => {
+                const productId = getProductId();
+                const product = allProducts.find(p => p.id === productId);
+                if (product) addToCart(product);
+            });
+        }
+    });
+</script>
+</body>
+</html>

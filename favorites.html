@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Избранное - Формула здоровья</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="responsive.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .favorites-page { padding: 30px 0 60px; min-height: 100vh; }
+        .page-title { font-size: 32px; font-weight: 800; color: #46211A; margin-bottom: 30px; }
+        .favorites-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
+        .favorite-card { background: white; border-radius: 20px; overflow: hidden; padding: 20px; text-align: center; border: 1px solid #e8ddd7; transition: 0.3s; position: relative; }
+        .favorite-card:hover { transform: translateY(-5px); box-shadow: 0 12px 24px rgba(0,0,0,0.1); }
+        .favorite-card img { max-width: 150px; max-height: 150px; object-fit: contain; margin-bottom: 15px; }
+        .favorite-card h3 { font-size: 18px; color: #46211A; margin-bottom: 10px; }
+        .favorite-card .price { font-size: 20px; font-weight: 800; color: #64b61a; margin-bottom: 15px; }
+        .fav-actions { display: flex; gap: 10px; justify-content: center; margin-top: 10px; }
+        .empty-state { text-align: center; padding: 60px; background: white; border-radius: 24px; }
+        @media (max-width: 768px) { .favorites-page { padding: 100px 0 40px; } }
+    </style>
+</head>
+<body>
+
+<div id="header-placeholder"></div>
+
+<main class="favorites-page">
+    <div class="container">
+        <h1 class="page-title">Избранное</h1>
+        <div id="favoritesContent"></div>
+    </div>
+</main>
+
+<div id="footer-placeholder"></div>
+
+<script src="script.js"></script>
+<script>
+    // Проверка авторизации
+    if (!currentUser) {
+        window.location.href = 'login.html';
+    }
+    
+    // Функция удаления из избранного
+    function removeFromFavoritesList(productId) {
+        favorites = favorites.filter(f => f.id !== productId);
+        saveFavorites();
+        renderFavoritesContent();
+        updateFavBadge();
+        
+        // Обновляем популярные товары если они есть на странице
+        if (typeof window.renderPopularGoods === 'function') {
+            window.renderPopularGoods();
+        }
+    }
+    
+    // Функция добавления в корзину из избранного
+    function addToCartFromFavorites(product) {
+        const existingItem = cart.find(c => c.id === product.id);
+        if (!existingItem) {
+            cart.push({ ...product, quantity: 1 });
+            saveCart();
+            updateCartBadge();
+            
+            // Обновляем популярные товары
+            if (typeof window.renderPopularGoods === 'function') {
+                window.renderPopularGoods();
+            }
+        } else {
+        }
+    }
+    
+    // Функция отображения избранного
+    function renderFavoritesContent() {
+        const container = document.getElementById('favoritesContent');
+        if (!container) return;
+        
+        // Обновляем favorites из localStorage на всякий случай
+        if (currentUser && currentUser.email) {
+            const savedFav = localStorage.getItem(`fav_${currentUser.email}`);
+            if (savedFav) {
+                favorites = JSON.parse(savedFav);
+            }
+        }
+        
+        if (!favorites.length) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <i class="far fa-heart" style="font-size:80px;color:#e0d6d0;margin-bottom:20px;"></i>
+                    <p>В избранном пока ничего нет</p>
+                    <a href="cabinet.html" class="btn-shop">Перейти к покупкам</a>
+                </div>
+            `;
+            return;
+        }
+        
+        const itemsHtml = favorites.map(item => {
+            return `
+                <div class="favorite-card">
+                    <img src="${item.image || 'images/placeholder.png'}" onerror="this.src='https://placehold.co/150x150/f9f6f3/693D3D?text=📦'">
+                    <h3>${escapeHtml(item.name)}</h3>
+                    <div class="price">${item.price.toLocaleString()} ₽</div>
+                    <div class="fav-actions">
+                        <button class="btn-remove" data-id="${item.id}">
+                            <i class="fas fa-trash"></i> Удалить
+                        </button>
+                        <button class="btn-cart-fav" data-id="${item.id}">
+                            <i class="fas fa-cart-plus"></i> В корзину
+                        </button>
+                    </div>
+                </div>
+            `;
+        }).join('');
+        
+        container.innerHTML = `
+            <div class="favorites-grid">
+                ${itemsHtml}
+            </div>
+        `;
+        
+        // Добавляем обработчики событий
+        document.querySelectorAll('.btn-remove').forEach(btn => {
+            btn.addEventListener('click', () => {
+                removeFromFavoritesList(btn.dataset.id);
+            });
+        });
+        
+        document.querySelectorAll('.btn-cart-fav').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const product = favorites.find(f => f.id === btn.dataset.id);
+                if (product) {
+                    addToCartFromFavorites(product);
+                }
+            });
+        });
+    }
+    
+    // Загружаем избранное при загрузке страницы
+    document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(() => {
+            renderFavoritesContent();
+        }, 100);
+    });
+    
+    // Делаем функцию глобальной для обновления из других мест
+    window.renderFavoritesContent = renderFavoritesContent;
+</script>
+</body>
+</html>
